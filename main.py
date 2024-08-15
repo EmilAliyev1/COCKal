@@ -1,8 +1,13 @@
-from typing import Final
+import asyncio, discord
 import os
+from typing import Final
+from discord.ext import commands
+from discord import *
 from dotenv import load_dotenv
-from discord import Intents, Client, Message
 from responses import get_response
+from discord.ext.commands import Bot
+from discord.voice_client import VoiceClient
+
 
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
@@ -11,6 +16,31 @@ TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 intents: Intents = Intents.default()
 intents.message_content = True  # NOQA
 client: Client = Client(intents=intents)
+tree = app_commands.CommandTree(client)
+
+
+# @app_commands.command(name="play_cockal",description="DICKiy_pOs")
+# async def ping(ctx: Interaction, have_account:bool, login_email:str=None, login_mobile:str=None):
+#     user=ctx.message.author
+#     voice_channel=user.voice.voice_channel
+#     pass_context=True
+#     channel=None
+#     # only play music if user is in a voice channel
+#     if voice_channel!= None:
+#         # grab user's voice channel
+#         channel=voice_channel.name
+#         await client.say('User is in channel: '+ channel)
+#         # create StreamPlayer
+#         vc= await client.join_voice_channel(voice_channel)
+#         player = vc.create_ffmpeg_player('COCKal.mp3', after=lambda: print('done'))
+#         player.start()
+#         while not player.is_done():
+#             await asyncio.sleep(1)
+#         # disconnect after the player has finished
+#         player.stop()
+#         await vc.disconnect()
+#     else:
+#         await client.say('User is not in a channel.')
 
 # STEP 2: MESSAGE FUNCTIONALITY
 async def send_message(message: Message, user_message: str) -> None:
@@ -31,7 +61,7 @@ async def send_message(message: Message, user_message: str) -> None:
 @client.event
 async def on_ready() -> None:
     print(f'{client.user} priveDICK!')
-
+    
 
 # STEP 4: HANDLING INCOMING MESSAGES
 @client.event
@@ -47,10 +77,4 @@ async def on_message(message: Message) -> None:
     await send_message(message, user_message)
 
 
-# STEP 5: MAIN ENTRY POINT
-def main() -> None:
-    client.run(token=TOKEN)
-
-
-if __name__ == '__main__':
-    main()
+client.run(TOKEN)
